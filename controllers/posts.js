@@ -8,7 +8,7 @@ const create = async (req, res) => {
     // find Topic by topic id, push new post into topic.posts
     const post = await Post.create(req.body)
     await Topic.updateOne(
-      { _id: req.params.id },
+      { _id: req.body.topicId },
       { $push: { posts: post } }
     )
     res.status(201).json(post)
