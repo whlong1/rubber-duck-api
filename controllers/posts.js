@@ -24,10 +24,10 @@ const create = async (req, res) => {
 const index = async (req, res) => {
   try {
     const { search, page, sort } = req.query
-    const limit = req.query.limit ? req.query.limit : 10
     const filter = { topic: req.query.search }
-    const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
     const fields = 'views iterations author createdAt'
+    const limit = req.query.limit ? req.query.limit : 10
+    const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
     const posts = await Post.find(search ? filter : {}, fields)
       .limit(limit)
       .skip(parseInt(page) * limit)
@@ -35,8 +35,8 @@ const index = async (req, res) => {
       .populate('author', 'name occupation')
       .populate({
         path: 'iterations',
-        select: 'text rating createdAt',
         perDocumentLimit: 1,
+        select: 'text rating createdAt',
         options: { sort: { 'rating': 'desc' } },
       })
     res.status(200).json(posts)
