@@ -21,6 +21,7 @@ const iterationSchema = new Schema({
   rating: { type: Number, default: 0 },
   text: { type: String, required: true },
   post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+  topic: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' },
 },
   { timestamps: true }
 )

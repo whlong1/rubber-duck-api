@@ -2,6 +2,8 @@ import { Post } from "../models/post.js"
 import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"
 
+import { compareText } from "./utils/utils.js"
+
 const newIteration = async (req, res) => {
   try {
     const { search } = req.query
@@ -9,9 +11,11 @@ const newIteration = async (req, res) => {
     const posts = await Post.find(search ? filter : {}, 'iterations')
       .populate({
         path: 'iterations',
+        perDocumentLimit: 10,
         select: 'text rating',
         options: { sort: { 'rating': 'desc' } }
       })
+    
     res.status(201).json(posts)
   } catch (err) {
     res.status(500).json(err)
