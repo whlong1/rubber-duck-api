@@ -20,8 +20,9 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    const topics = await Topic.findById(req.params.id).populuate('posts')
-    res.status(200).json(topics)
+    const topic = await Topic.findById(req.params.id)
+      .populate('posts')
+    res.status(200).json(topic)
   } catch (err) {
     res.status(500).json(err)
   }
