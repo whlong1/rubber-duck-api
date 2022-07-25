@@ -11,10 +11,6 @@ const profileSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  avatar: {
-    type: String,
-    required: true
-  },
   dob: {
     type: Date,
     required: true,
