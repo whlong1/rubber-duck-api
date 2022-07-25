@@ -37,11 +37,11 @@ const profileSchema = new mongoose.Schema({
     required: true,
   },
   votes: [voteSchema],
+  interests: [String],
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
-  interests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
 }, {
   timestamps: true,
 })
