@@ -2,20 +2,30 @@ import { Post } from "../models/post.js"
 import { Profile } from "../models/profile.js"
 import { Topic } from "../models/topic.js"
 
+// select topic controller function,
+// when a user selects a topic,
+// make sure that user has not made a post with that topic before
+// if they have, return that topic.
+
 const create = async (req, res) => {
   // When a user wants to create a new post, 
   // check to see if they have already created a post on that topic
   try {
-    const post = await Post.create(req.body)
-    await Topic.updateOne(
-      { _id: req.body.topic },
-      { $push: { posts: post } }
-    )
-    await Profile.updateOne(
-      { _id: req.user.profile },
-      { $push: { posts: post } }
-    )
-    res.status(201).json(post)
+    const oldPost = await Post.find({ author: req.user.profile, topic: req.body.topic })
+    if (oldPost) {
+      res.status(401).json({ msg: 'You have already created a post on this topic!' })
+    } else {
+      const post = await Post.create(req.body)
+      await Topic.updateOne(
+        { _id: req.body.topic },
+        { $push: { posts: post } }
+      )
+      await Profile.updateOne(
+        { _id: req.user.profile },
+        { $push: { posts: post } }
+      )
+      res.status(201).json(post)
+    }
   } catch (err) {
     res.status(500).json(err)
   }

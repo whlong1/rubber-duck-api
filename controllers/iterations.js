@@ -11,7 +11,6 @@ const newIteration = async (req, res) => {
         select: 'text rating',
         options: { sort: { 'rating': 'desc' } }
       })
-
     res.status(201).json(posts)
   } catch (err) {
     res.status(500).json(err)
