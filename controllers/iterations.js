@@ -97,8 +97,8 @@ const createComment = async (req, res) => {
     const iteration = await Iteration.findById(req.params.iterationId)
     iteration.comments.push(req.body)
     await iteration.save()
-    const newComment = iteration.comments[post.comments.length - 1]
-    const profile = await Profile.findById(req.user.profile, 'name avatar')
+    const newComment = iteration.comments[iteration.comments.length - 1]
+    const profile = await Profile.findById(req.user.profile, 'name')
     newComment.author = profile
     res.status(201).json(newComment)
   } catch (err) {
