@@ -9,6 +9,10 @@ const create = async (req, res) => {
       { _id: req.body.topic },
       { $push: { posts: post } }
     )
+    await Profile.updateOne(
+      { _id: req.user.profile },
+      { $push: { posts: post } }
+    )
     res.status(201).json(post)
   } catch (err) {
     res.status(500).json(err)
@@ -42,7 +46,6 @@ const show = async (req, res) => {
     res.status(500).json(err)
   }
 }
-
 
 const deletePost = async (req, res) => {
   try {
