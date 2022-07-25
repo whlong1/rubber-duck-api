@@ -20,6 +20,7 @@ const newIteration = async (req, res) => {
 
 const createIteration = async (req, res) => {
   try {
+    req.body.post = req.params.id
     const iteration = await Iteration.create(req.body)
     await Post.updateOne(
       { _id: req.params.id },

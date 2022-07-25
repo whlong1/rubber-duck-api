@@ -3,6 +3,8 @@ import { Profile } from "../models/profile.js"
 import { Topic } from "../models/topic.js"
 
 const create = async (req, res) => {
+  // When a user wants to create a new post, 
+  // check to see if they have already created a post on that topic
   try {
     const post = await Post.create(req.body)
     await Topic.updateOne(
@@ -21,14 +23,22 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
   try {
-    const { page, sort } = req.query
-    const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
+    const { search, page, sort } = req.query
     const limit = req.query.limit ? req.query.limit : 10
-    const posts = await Post.find({}, 'views iterations author')
+    const filter = { topic: req.query.search }
+    const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
+    const fields = 'views iterations author createdAt'
+    const posts = await Post.find(search ? filter : {}, fields)
       .limit(limit)
       .skip(parseInt(page) * limit)
       .sort(sort ? order[sort] : order.recent)
-      .populate('topic', 'title category')
+      .populate('author', 'name occupation')
+      .populate({
+        path: 'iterations',
+        select: 'text rating createdAt',
+        perDocumentLimit: 1,
+        options: { sort: { 'rating': 'desc' } },
+      })
     res.status(200).json(posts)
   } catch (err) {
     console.log(err)
