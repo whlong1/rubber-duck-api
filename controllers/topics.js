@@ -1,4 +1,5 @@
 import { Topic } from "../models/topic.js"
+import { Profile } from "../models/profile.js"
 
 const index = async (req, res) => {
   try {
@@ -11,13 +12,12 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    const topics = await Topic.findById(req.params.id)
+    const topics = await Topic.findById(req.params.id).populuate('posts')
     res.status(200).json(topics)
   } catch (err) {
     res.status(500).json(err)
   }
 }
-
 
 export {
   index,
