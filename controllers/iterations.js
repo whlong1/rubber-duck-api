@@ -35,20 +35,23 @@ const castVote = async (req, res) => {
   try {
     const vote = req.body.vote
     const { iterationId, postId } = req.params
-    const profile = await Profile.findById(req.user.profile, 'votes')
-    if (profile.votes.find((v) => v.iterationId === iterationId)) {
+
+    const post = await Post.findById(postId)
+    const iteration = await Post.findById(iterationId)
+
+    if (iteration.votes.find((v) => v.profileId === req.user.profile)) {
       return res.status(401).json({
         msg: `You cannot ${vote === 1 ? 'upvote' : 'downvote'} the same comment twice!`
       })
     }
-    const post = await Post.findById(postId)
-    const iteration = await Post.findById(iterationId)
+
     if (post.author.equals(req.user.profile)) {
       return res.status(401).json({ msg: 'You cannot vote for your own comment.' })
     }
+
     iteration.rating += vote
-    profile.votes.push({ vote: vote, iterationId: iterationId })
-    await Promise.all([iteration.save(), profile.save()])
+    iteration.votes.push({ vote: vote, profileId: req.user.profile })
+    await iteration.save()
     res.status(200).json(iteration)
   } catch (err) {
     res.status(500).json(err)
@@ -58,13 +61,12 @@ const castVote = async (req, res) => {
 const undoVote = async (req, res) => {
   try {
     const { iterationId } = req.params
-    const profile = await Profile.findById(req.user.profile, 'votes')
     const iteration = await Iteration.findById(iterationId)
-    const prev = profile.votes.find((v) => v.iterationId === iterationId)
+    const prev = iteration.votes.find((v) => v.profileId === req.user.profile)
     if (!prev) { return res.status(404).json({ msg: 'Vote note found!' }) }
     iteration.rating -= prev.vote
-    profile.votes.remove({ _id: prev._id })
-    await Promise.all([iteration.save(), profile.save()])
+    iteration.votes.remove({ _id: prev._id })
+    await iteration.save()
     res.status(200).json(iteration)
   } catch (err) {
     res.status(500).json(err)
