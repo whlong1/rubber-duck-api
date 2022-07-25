@@ -21,8 +21,8 @@ router.delete('/:id/bookmarks', checkAuth, postsCtrl.removeBookmark)
 // Iterations
 router.get('/:id/iterations', checkAuth, iterationsCtrl.newIteration)
 router.post('/:id/iterations', checkAuth, iterationsCtrl.createIteration)
-router.post('/:id/iterations/:iterationId', checkAuth, iterationsCtrl.castVote)
-router.delete('/:id/iterations/:iterationId', checkAuth, iterationsCtrl.undoVote)
+router.post('/:id/iterations/:iterationId/votes', checkAuth, iterationsCtrl.castVote)
+router.delete('/:id/iterations/:iterationId/votes', checkAuth, iterationsCtrl.undoVote)
 
 // Comments
 router.post('/:id/iterations/:iterationId/comments/:commentId', checkAuth, attributeAuthor, iterationsCtrl.createComment)
