@@ -20,6 +20,7 @@ const iterationSchema = new Schema({
   comments: [commentSchema],
   rating: { type: Number, default: 0 },
   text: { type: String, required: true },
+  post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
 },
   { timestamps: true }
 )

@@ -6,7 +6,7 @@ const create = async (req, res) => {
   try {
     const post = await Post.create(req.body)
     await Topic.updateOne(
-      { _id: req.body.topicId },
+      { _id: req.body.topic },
       { $push: { posts: post } }
     )
     res.status(201).json(post)
@@ -17,11 +17,9 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
   try {
-    const { search, page, sort } = req.query
-    const order = { recent: { createdAt: 'desc' } }
+    const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
     const limit = req.query.limit ? req.query.limit : 10
-    const filter = { text: { $regex: search, $options: 'i' } }
-    const posts = await Post.find(search ? filter : {})
+    const posts = await Post.find({})
       .limit(limit)
       .skip(parseInt(page) * limit)
       .sort(sort ? order[sort] : order.recent)
