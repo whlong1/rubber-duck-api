@@ -24,10 +24,11 @@ const index = async (req, res) => {
     const { page, sort } = req.query
     const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
     const limit = req.query.limit ? req.query.limit : 10
-    const posts = await Post.find({})
+    const posts = await Post.find({}, 'views iterations author')
       .limit(limit)
       .skip(parseInt(page) * limit)
       .sort(sort ? order[sort] : order.recent)
+      .populate('topic', 'title category')
     res.status(200).json(posts)
   } catch (err) {
     console.log(err)
@@ -72,7 +73,7 @@ const incrementViews = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id, 'views viewers author')
     if (post.viewers.includes(req.user.profile) || post.author.equals(req.user.profile)) {
-      res.status(200).send('OK')
+      res.status(200).send('Already viewed.')
     } else {
       post.views = post.views + 1
       post.viewers.push(req.user.profile)
@@ -120,5 +121,3 @@ export {
   incrementViews,
   deletePost as delete,
 }
-
-
