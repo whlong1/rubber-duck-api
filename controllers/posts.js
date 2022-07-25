@@ -17,6 +17,7 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
   try {
+    const { page, sort } = req.query
     const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
     const limit = req.query.limit ? req.query.limit : 10
     const posts = await Post.find({})
@@ -25,6 +26,7 @@ const index = async (req, res) => {
       .sort(sort ? order[sort] : order.recent)
     res.status(200).json(posts)
   } catch (err) {
+    console.log(err)
     res.status(500).json(err)
   }
 }
@@ -32,6 +34,8 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
+      .populate('iterations')
+      .populate('topic', 'title')
     res.status(200).json(post)
   } catch (err) {
     console.log(err)
