@@ -38,8 +38,11 @@ const castVote = async (req, res) => {
     const { iterationId, postId } = req.params
 
     const post = await Post.findById(postId)
-    console.log(post)
+    console.log('POST%%%%%%%%%%%', post)
     const iteration = await Iteration.findById(iterationId)
+
+    console.log(post.author, req.user.profile)
+    console.log(post.author.equals(req.user.profile))
 
     if (iteration.votes.find((v) => v.profileId === req.user.profile)) {
       return res.status(401).json({
@@ -55,7 +58,7 @@ const castVote = async (req, res) => {
 
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
-    iteration.rating = (total / length).toFixed(2)
+    iteration.rating = (total / length)
 
     await iteration.save()
     res.status(200).json(iteration)
@@ -71,16 +74,20 @@ const undoVote = async (req, res) => {
     const iteration = await Iteration.findById(iterationId)
     const prev = iteration.votes.find((v) => v.profileId === req.user.profile)
     if (!prev) { return res.status(404).json({ msg: 'Vote note found!' }) }
-    
+
     iteration.votes.remove({ _id: prev._id })
 
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
-    iteration.rating = (total / length).toFixed(2)
+
+    console.log(isNaN(total / length))
+
+    iteration.rating = isNaN(total / length) ? 0 : (total / length)
 
     await iteration.save()
     res.status(200).json(iteration)
   } catch (err) {
+    console.log(err)
     res.status(500).json(err)
   }
 }

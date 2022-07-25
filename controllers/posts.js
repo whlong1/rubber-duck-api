@@ -9,7 +9,9 @@ import { Topic } from "../models/topic.js"
 
 const create = async (req, res) => {
   try {
-    const oldPost = await Post.find({ author: req.user.profile, topic: req.body.topic })
+    const oldPost = await Post.findOne({ author: req.user.profile, topic: req.body.topic }).populate('author')
+    console.log('OLD POST::::::::', oldPost)
+
     if (oldPost) {
       res.status(401).json({ msg: 'You have already created a post on this topic!' })
     } else {
