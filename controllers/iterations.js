@@ -53,7 +53,7 @@ const castVote = async (req, res) => {
 
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
-    iteration.rating = total / length
+    iteration.rating = (total / length).toFixed(2)
 
     await iteration.save()
     res.status(200).json(iteration)
@@ -73,7 +73,7 @@ const undoVote = async (req, res) => {
 
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
-    iteration.rating = total / length
+    iteration.rating = (total / length).toFixed(2)
 
     await iteration.save()
     res.status(200).json(iteration)
