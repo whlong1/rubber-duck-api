@@ -11,9 +11,7 @@ const topicSchema = new Schema({
     type: String,
     enum: ['Computer Science', 'Math', 'Science'],
   },
-  iterations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Iteration' }],
-  viewers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile', required: true }
+  posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
 },
   { timestamps: true }
 )
