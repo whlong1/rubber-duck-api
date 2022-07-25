@@ -25,7 +25,7 @@ router.post('/:id/iterations/:iterationId/votes', checkAuth, validateVote, itera
 router.delete('/:id/iterations/:iterationId/votes', checkAuth, iterationsCtrl.undoVote)
 
 // Comments
-router.post('/:id/iterations/:iterationId/comments/:commentId', checkAuth, attributeAuthor, iterationsCtrl.createComment)
+router.post('/:id/iterations/:iterationId/comments', checkAuth, attributeAuthor, iterationsCtrl.createComment)
 
 
 
