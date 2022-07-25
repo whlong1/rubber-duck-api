@@ -64,8 +64,8 @@ const undoVote = async (req, res) => {
     if (!prev) { return res.status(404).json({ msg: 'Vote note found!' }) }
     iteration.rating -= prev.vote
     profile.votes.remove({ _id: prev._id })
-    await Promise.all([post.save(), profile.save()])
-    res.status(200).json(comment)
+    await Promise.all([iteration.save(), profile.save()])
+    res.status(200).json(iteration)
   } catch (err) {
     res.status(500).json(err)
   }
