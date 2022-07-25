@@ -41,7 +41,7 @@ const castVote = async (req, res) => {
 
     if (iteration.votes.find((v) => v.profileId === req.user.profile)) {
       return res.status(401).json({
-        msg: `You cannot ${vote === 1 ? 'upvote' : 'downvote'} the same post twice!`
+        msg: `You cannot vote for the same post twice!`
       })
     }
 
@@ -49,8 +49,12 @@ const castVote = async (req, res) => {
       return res.status(401).json({ msg: 'You cannot vote for your own post.' })
     }
 
-    iteration.rating += vote
     iteration.votes.push({ vote: vote, profileId: req.user.profile })
+
+    const length = iteration.votes.length
+    const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
+    iteration.rating = total / length
+
     await iteration.save()
     res.status(200).json(iteration)
   } catch (err) {
@@ -64,8 +68,13 @@ const undoVote = async (req, res) => {
     const iteration = await Iteration.findById(iterationId)
     const prev = iteration.votes.find((v) => v.profileId === req.user.profile)
     if (!prev) { return res.status(404).json({ msg: 'Vote note found!' }) }
-    iteration.rating -= prev.vote
+    
     iteration.votes.remove({ _id: prev._id })
+
+    const length = iteration.votes.length
+    const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
+    iteration.rating = total / length
+
     await iteration.save()
     res.status(200).json(iteration)
   } catch (err) {
