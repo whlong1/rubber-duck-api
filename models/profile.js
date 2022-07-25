@@ -1,5 +1,10 @@
 import mongoose from 'mongoose'
 
+const voteSchema = new mongoose.Schema({
+  vote: { type: Number, max: 1, min: -1, default: 1 },
+  commentId: { type: String, required: true }
+})
+
 const profileSchema = new mongoose.Schema({
   email: {
     type: String,
