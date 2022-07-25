@@ -21,11 +21,12 @@ router.delete('/:id/bookmarks', checkAuth, postsCtrl.removeBookmark)
 // Iterations
 router.get('/:id/iterations', checkAuth, iterationsCtrl.newIteration)
 router.post('/:id/iterations', checkAuth, iterationsCtrl.createIteration)
-router.post('/:id/iterations/:iterationId/votes', checkAuth, validateVote, iterationsCtrl.castVote)
-router.delete('/:id/iterations/:iterationId/votes', checkAuth, iterationsCtrl.undoVote)
+
+router.post('/:postId/iterations/:iterationId/votes', checkAuth, validateVote, iterationsCtrl.castVote)
+router.delete('/:postId/iterations/:iterationId/votes', checkAuth, iterationsCtrl.undoVote)
 
 // Comments
-router.post('/:id/iterations/:iterationId/comments', checkAuth, attributeAuthor, iterationsCtrl.createComment)
+router.post('/:postId/iterations/:iterationId/comments', checkAuth, attributeAuthor, iterationsCtrl.createComment)
 
 
 

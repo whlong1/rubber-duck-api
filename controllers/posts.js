@@ -8,8 +8,6 @@ import { Topic } from "../models/topic.js"
 // if they have, return that topic.
 
 const create = async (req, res) => {
-  // When a user wants to create a new post, 
-  // check to see if they have already created a post on that topic
   try {
     const oldPost = await Post.find({ author: req.user.profile, topic: req.body.topic })
     if (oldPost) {

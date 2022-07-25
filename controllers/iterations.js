@@ -32,12 +32,14 @@ const createIteration = async (req, res) => {
 }
 
 const castVote = async (req, res) => {
+  console.log('***************************hit')
   try {
     const vote = req.body.vote
     const { iterationId, postId } = req.params
 
     const post = await Post.findById(postId)
-    const iteration = await Post.findById(iterationId)
+    console.log(post)
+    const iteration = await Iteration.findById(iterationId)
 
     if (iteration.votes.find((v) => v.profileId === req.user.profile)) {
       return res.status(401).json({
@@ -58,6 +60,7 @@ const castVote = async (req, res) => {
     await iteration.save()
     res.status(200).json(iteration)
   } catch (err) {
+    console.log(err)
     res.status(500).json(err)
   }
 }
