@@ -1,11 +1,16 @@
 import { Post } from "../models/post.js"
 import { Profile } from "../models/profile.js"
+import { Topic } from "../models/topic.js"
 
 const create = async (req, res) => {
   try {
     // topicId included in req.body
     // find Topic by topic id, push new post into topic.posts
     const post = await Post.create(req.body)
+    await Topic.updateOne(
+      { _id: req.params.id },
+      { $push: { posts: post } }
+    )
     res.status(201).json(post)
   } catch (err) {
     res.status(500).json(err)

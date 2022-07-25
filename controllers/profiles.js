@@ -1,4 +1,4 @@
-import { Profile } from "../models/profile/profile.js"
+import { Profile } from "../models/profile.js"
 
 const index = async (req, res) => {
   try {

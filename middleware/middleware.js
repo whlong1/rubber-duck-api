@@ -7,3 +7,8 @@ function removeEmptyFields(req, res, next) {
   for (let key in req.body) req.body[key] === '' && delete req.body[key]
   next()
 }
+
+export {
+  attributeAuthor,
+  removeEmptyFields
+}
