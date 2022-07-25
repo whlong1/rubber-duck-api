@@ -1,5 +1,14 @@
 import { Topic } from "../models/topic.js"
-import { Profile } from "../models/profile.js"
+
+const create = async (req, res) => {
+  try {
+    const topic = await Topic.create(req.body)
+    res.status(201).json(topic)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
 
 const index = async (req, res) => {
   try {
@@ -20,6 +29,7 @@ const show = async (req, res) => {
 }
 
 export {
+  create,
   index,
   show,
 }

@@ -7,6 +7,7 @@ import formData from 'express-form-data'
 import { router as authRouter } from './routes/auth.js'
 import { router as topicsRouter } from './routes/topics.js'
 import { router as profilesRouter } from './routes/profiles.js'
+import { router as postsRouter } from './routes/posts.js'
 
 import './config/database.js'
 
@@ -18,6 +19,7 @@ app.use(express.json())
 app.use(formData.parse())
 
 app.use('/api/auth', authRouter)
+app.use('/api/posts', postsRouter)
 app.use('/api/topics', topicsRouter)
 app.use('/api/profiles', profilesRouter)
 

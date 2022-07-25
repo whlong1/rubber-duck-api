@@ -10,6 +10,7 @@ const router = Router()
 /*---------- Protected Routes ----------*/
 router.use(decodeUserFromToken)
 router.get('/', checkAuth, topicsCtrl.index)
+router.post('/', checkAuth, topicsCtrl.create)
 router.get('/:id', checkAuth, topicsCtrl.show)
 
 

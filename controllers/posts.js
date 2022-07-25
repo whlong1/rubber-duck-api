@@ -3,6 +3,8 @@ import { Profile } from "../models/profile.js"
 
 const create = async (req, res) => {
   try {
+    // topicId included in req.body
+    // find Topic by topic id, push new post into topic.posts
     const post = await Post.create(req.body)
     res.status(201).json(post)
   } catch (err) {
