@@ -9,7 +9,6 @@ const create = async (req, res) => {
   }
 }
 
-
 const index = async (req, res) => {
   try {
     const topics = await Topic.find({})

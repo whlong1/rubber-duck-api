@@ -6,7 +6,6 @@ import cors from 'cors'
 // Import Custom Middleware
 import { removeEmptyFields } from './middleware/middleware.js'
 
-
 // Import Routers
 import { router as authRouter } from './routes/auth.js'
 import { router as postsRouter } from './routes/posts.js'

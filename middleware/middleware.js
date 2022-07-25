@@ -13,7 +13,6 @@ function validateVote(req, res, next) {
   return Math.abs(req.body.vote) === 1 ? next() : res.status(401).json({ msg: 'Invalid vote!' })
 }
 
-
 export {
   attributeAuthor,
   removeEmptyFields,
