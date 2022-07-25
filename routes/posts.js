@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import * as postsCtrl from '../controllers/posts.js'
 import * as iterationsCtrl from '../controllers/iterations.js'
-import { attributeAuthor } from '../middleware/middleware.js'
+import { attributeAuthor, validateVote } from '../middleware/middleware.js'
 import { decodeUserFromToken, checkAuth } from '../middleware/auth.js'
 
 const router = Router()
@@ -21,7 +21,7 @@ router.delete('/:id/bookmarks', checkAuth, postsCtrl.removeBookmark)
 // Iterations
 router.get('/:id/iterations', checkAuth, iterationsCtrl.newIteration)
 router.post('/:id/iterations', checkAuth, iterationsCtrl.createIteration)
-router.post('/:id/iterations/:iterationId/votes', checkAuth, iterationsCtrl.castVote)
+router.post('/:id/iterations/:iterationId/votes', checkAuth, validateVote, iterationsCtrl.castVote)
 router.delete('/:id/iterations/:iterationId/votes', checkAuth, iterationsCtrl.undoVote)
 
 // Comments
