@@ -2,6 +2,22 @@ import { Post } from "../models/post.js"
 import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"
 
+const newIteration = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id)
+    const posts = await Post.find({ topic: post.topic }, 'iterations')
+      .populate({
+        path: 'iterations',
+        select: 'text rating',
+        options: { sort: { 'rating': 'desc' } }
+      })
+
+    res.status(201).json(posts)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
 const createIteration = async (req, res) => {
   try {
     const iteration = await Iteration.create(req.body)
@@ -73,6 +89,7 @@ const createComment = async (req, res) => {
 export {
   undoVote,
   castVote,
+  newIteration,
   createComment,
   createIteration,
 }

@@ -4,8 +4,6 @@ import { Topic } from "../models/topic.js"
 
 const create = async (req, res) => {
   try {
-    // topicId included in req.body
-    // find Topic by topic id, push new post into topic.posts
     const post = await Post.create(req.body)
     await Topic.updateOne(
       { _id: req.body.topicId },
