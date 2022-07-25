@@ -4,8 +4,9 @@ import { Iteration } from "../models/iteration.js"
 
 const newIteration = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id)
-    const posts = await Post.find({ topic: post.topic }, 'iterations')
+    const { search } = req.query
+    const filter = { topic: req.query.search }
+    const posts = await Post.find(search ? filter : {}, 'iterations')
       .populate({
         path: 'iterations',
         select: 'text rating',
