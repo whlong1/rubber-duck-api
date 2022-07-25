@@ -41,12 +41,12 @@ const castVote = async (req, res) => {
 
     if (iteration.votes.find((v) => v.profileId === req.user.profile)) {
       return res.status(401).json({
-        msg: `You cannot ${vote === 1 ? 'upvote' : 'downvote'} the same comment twice!`
+        msg: `You cannot ${vote === 1 ? 'upvote' : 'downvote'} the same post twice!`
       })
     }
 
     if (post.author.equals(req.user.profile)) {
-      return res.status(401).json({ msg: 'You cannot vote for your own comment.' })
+      return res.status(401).json({ msg: 'You cannot vote for your own post.' })
     }
 
     iteration.rating += vote
