@@ -32,17 +32,12 @@ const createIteration = async (req, res) => {
 }
 
 const castVote = async (req, res) => {
-  console.log('***************************hit')
   try {
     const vote = req.body.vote
     const { iterationId, postId } = req.params
 
     const post = await Post.findById(postId)
-    console.log('POST%%%%%%%%%%%', post)
     const iteration = await Iteration.findById(iterationId)
-
-    console.log(post.author, req.user.profile)
-    console.log(post.author.equals(req.user.profile))
 
     if (iteration.votes.find((v) => v.profileId === req.user.profile)) {
       return res.status(401).json({
@@ -79,9 +74,6 @@ const undoVote = async (req, res) => {
 
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
-
-    console.log(isNaN(total / length))
-
     iteration.rating = isNaN(total / length) ? 0 : (total / length)
 
     await iteration.save()
