@@ -3,8 +3,14 @@ import { Topic } from "../models/topic.js"
 
 const create = async (req, res) => {
   try {
-    const topic = await Topic.create(req.body)
-    res.status(201).json(topic)
+    const filter = { title: { $regex: `^${req.body.title}$`, $options: 'i' } }
+    const existingTopic = await Topic.findOne(filter)
+    if (existingTopic) {
+      res.status(401).json({ msg: 'That topic already exists!' })
+    } else {
+      const topic = await Topic.create(req.body)
+      res.status(201).json(topic)
+    }
   } catch (err) {
     res.status(500).json(err)
   }

@@ -5,3 +5,8 @@ TEST
 create a user
 create a post with a topic
 create another user and try to create a post on that topic
+
+
+QUESTION
+do we want to deliver all the comments for an iteration with post.show?
+or, build an iteration.show controller, pull comments
