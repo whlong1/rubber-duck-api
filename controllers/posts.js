@@ -54,7 +54,7 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate('iterations')
+    .populate('iterations', 'text rating createdAt comments')
       .populate('topic', 'title')
     res.status(200).json(post)
   } catch (err) {

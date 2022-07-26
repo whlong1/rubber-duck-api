@@ -34,7 +34,7 @@ const findPostByTopic = async (req, res) => {
     const { id } = req.params
     const filter = { author: req.user.profile, topic: id }
     const post = await Post.findOne(filter)
-      .populate('iterations')
+      .populate('iterations', 'text rating createdAt comments')
       .populate('topic', 'title')
     res.status(200).json(post)
   } catch (err) {
