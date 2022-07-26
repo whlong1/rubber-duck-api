@@ -14,8 +14,20 @@ const show = async (req, res) => {
     const profile = await Profile.findById(req.params.id)
       .populate('following', 'name occupation')
       .populate('followers', 'name occupation')
+      .populate({
+        path: 'posts',
+        populate: { path: 'author', model: 'Profile', select: 'name occupation' },
+        populate: {
+          model: 'Iteration',
+          perDocumentLimit: 1,
+          path: 'iterations', 
+          select: 'text rating createdAt',
+          options: { sort: { 'rating': 'desc' } },
+        }
+      })
     res.status(200).json(profile)
   } catch (err) {
+    console.log(err)
     res.status(500).json(err)
   }
 }
