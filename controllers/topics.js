@@ -3,7 +3,10 @@ import { Topic } from "../models/topic.js"
 
 const create = async (req, res) => {
   try {
-    const filter = { title: { $regex: `^${req.body.title}$`, $options: 'i' } }
+    const filter = { 
+      category: req.body.category,
+      title: { $regex: `^${req.body.title}$`, $options: 'i' } 
+    }
     const existingTopic = await Topic.findOne(filter)
     if (existingTopic) {
       res.status(401).json({ msg: 'That topic already exists!' })
@@ -18,7 +21,9 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
   try {
-    const topics = await Topic.find({})
+    const { search } = req.query
+    const filter = { category: req.query.search }
+    const topics = await Topic.find(search ? filter : {})
     res.status(200).json(topics)
   } catch (err) {
     res.status(500).json(err)
