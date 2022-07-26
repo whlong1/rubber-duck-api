@@ -38,13 +38,13 @@ const index = async (req, res) => {
       .skip(parseInt(page) * limit)
       .sort(sort ? order[sort] : order.recent)
       .populate('author', 'name occupation')
+      .populate('topic')
       .populate({
         path: 'iterations',
         perDocumentLimit: 1,
         select: 'text rating createdAt',
         options: { sort: { 'rating': 'desc' } },
       })
-    console.log(posts)
     res.status(200).json(posts)
   } catch (err) {
     console.log(err)
@@ -56,6 +56,7 @@ const show = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
       .populate('topic', 'title')
+      .populate('author', 'name occupation')
       .populate({
         path: 'iterations',
         select: 'text rating createdAt comments',
