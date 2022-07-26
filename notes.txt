@@ -1,0 +1,9 @@
+Create New Post => Pick A Topic 
+
+send request
+find posts where
+  post.author === req.user.profile
+  post.topic === req.params.topicId
+
+  populate iterations
+  user is automatically adding next iteration

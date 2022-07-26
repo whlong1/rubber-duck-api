@@ -3,7 +3,7 @@ import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"
 import { compareText } from "./utils/utils.js"
 
-const indexIteration = async (req, res) => {
+const findKeywords = async (req, res) => {
   try {
     const { search } = req.query
     const filter = { topic: req.query.search }
@@ -107,7 +107,7 @@ const createComment = async (req, res) => {
 export {
   undoVote,
   castVote,
-  indexIteration,
+  findKeywords,
   createComment,
   createIteration,
 }
