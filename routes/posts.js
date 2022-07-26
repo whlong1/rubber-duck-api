@@ -10,8 +10,6 @@ const router = Router()
 
 // ========= Protected Routes ========= 
 router.use(decodeUserFromToken)
-
-// http://localhost:3001/api/posts?sort=popular&&search=62ded86322b57344c4b4824e
 router.get('/', checkAuth, postsCtrl.index)
 router.get('/:id', checkAuth, postsCtrl.show)
 
@@ -30,7 +28,5 @@ router.delete('/:postId/iterations/:iterationId/votes', checkAuth, iterationsCtr
 
 // Comments
 router.post('/:postId/iterations/:iterationId/comments', checkAuth, attributeAuthor, iterationsCtrl.createComment)
-
-
 
 export { router }

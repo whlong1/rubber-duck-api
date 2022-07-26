@@ -31,7 +31,6 @@ const createIteration = async (req, res) => {
       )
       res.status(201).json(iteration)
     }
-
   } catch (err) {
     res.status(500).json(err)
   }

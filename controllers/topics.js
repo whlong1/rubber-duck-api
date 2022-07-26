@@ -49,7 +49,6 @@ const findPostByTopic = async (req, res) => {
   }
 }
 
-
 export {
   show,
   index,

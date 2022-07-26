@@ -1,12 +1,26 @@
-when adding a topic, make sure a topic with that name does not already exist
-
-
 TEST
 create a user
 create a post with a topic
 create another user and try to create a post on that topic
 
 
+TEST
+upvote for -1
+
+
 QUESTION
 do we want to deliver all the comments for an iteration with post.show?
 or, build an iteration.show controller, pull comments
+
+
+posts index
+// http://localhost:3001/api/posts?sort=popular&&search=62ded86322b57344c4b4824e
+
+
+
+findPostByTopic
+  when a user clicks on a topic they would like to add a post for
+  check if post already exists
+
+
+Need button on post details to add iteration

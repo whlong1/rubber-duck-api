@@ -6,7 +6,6 @@ const create = async (req, res) => {
   try {
     const oldPost = await Post.findOne({ author: req.user.profile, topic: req.body.topic })
       .populate('author')
-
     if (oldPost) {
       res.status(401).json({ msg: 'You already made a post on this topic!' })
     } else {
