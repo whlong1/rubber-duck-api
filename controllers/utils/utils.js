@@ -18,16 +18,15 @@ const wordsForRemoval = [
   "common", "numerous", '1', '100', '0', "neither", "he", "she", "this", "will"
 ]
 
-const compareText = (textArr) => {
-  const wordsUniqueToAPost = textArr.map((block) => [...new Set(block.split(' '))])
-  const textBlock = wordsUniqueToAPost.flat().toString().toLowerCase().replace(/\W|_/g, ' ')
+const compareText = (iterations) => {
+  const textArr = iterations.map((i) => i.text)
+  const wordsUniqueToEachPost = textArr.map((block) => [...new Set(block.toLowerCase().replace(/\W|_/g, ' ').split(' '))])
+  const textBlock = wordsUniqueToEachPost.flat().toString().toLowerCase().replace(/\W|_/g, ' ')
   const filteredBlock = textBlock.replace(new RegExp('\\b(' + wordsForRemoval.join("|") + ')\\b', 'gi'), ' ')
-  const wordArr = filteredBlock.replace(/\s{2,}/g, ' ').split(' ')
+  const wordArr = filteredBlock.split(' ')
   const wordCount = wordArr.reduce((obj, w) => { obj[w] ? obj[w]++ : obj[w] = 1; return obj }, {})
   const keys = Object.keys(wordCount).filter((key) => key !== '')
   return keys.sort((a, b) => wordCount[b] - wordCount[a]).slice(0, 20)
 }
 
-export {
-  compareText
-}
+export { compareText }

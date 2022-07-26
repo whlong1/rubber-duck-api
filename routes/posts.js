@@ -19,7 +19,7 @@ router.post('/:id/bookmarks', checkAuth, postsCtrl.bookmarkPost)
 router.delete('/:id/bookmarks', checkAuth, postsCtrl.removeBookmark)
 
 // Iterations
-router.get('/:id/iterations', checkAuth, iterationsCtrl.newIteration)
+router.get('/:id/iterations', checkAuth, iterationsCtrl.indexIteration)
 router.post('/:id/iterations', checkAuth, iterationsCtrl.createIteration)
 
 router.post('/:postId/iterations/:iterationId/votes', checkAuth, validateVote, iterationsCtrl.castVote)
