@@ -56,7 +56,6 @@ const show = async (req, res) => {
       .populate('topic', 'title')
       .populate({
         path: 'iterations',
-        perDocumentLimit: 1,
         select: 'text rating createdAt comments',
         options: { sort: { 'rating': 'desc' } },
         populate: { path: 'comments.author', model: 'Profile', select: 'name occupation' }
