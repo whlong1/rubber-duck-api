@@ -40,7 +40,6 @@ const castVote = async (req, res) => {
   try {
     const vote = req.body.vote
     const { iterationId, postId } = req.params
-
     const post = await Post.findById(postId)
     const iteration = await Iteration.findById(iterationId)
 
@@ -49,13 +48,11 @@ const castVote = async (req, res) => {
         msg: `You cannot vote for the same post twice!`
       })
     }
-
     if (post.author.equals(req.user.profile)) {
       return res.status(401).json({ msg: 'You cannot vote for your own post.' })
     }
 
     iteration.votes.push({ vote: vote, profileId: req.user.profile })
-
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
     iteration.rating = calculateStars((total / length))

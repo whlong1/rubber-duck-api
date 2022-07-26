@@ -38,5 +38,4 @@ const calculateStars = (value) => {
 export { 
   compareText,
   calculateStars
-
 }
