@@ -53,8 +53,14 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-    .populate('iterations', 'text rating createdAt comments')
       .populate('topic', 'title')
+      .populate({
+        path: 'iterations',
+        perDocumentLimit: 1,
+        select: 'text rating createdAt comments',
+        options: { sort: { 'rating': 'desc' } },
+        populate: { path: 'comments.author', model: 'Profile', select: 'name occupation' }
+      })
     res.status(200).json(post)
   } catch (err) {
     console.log(err)
