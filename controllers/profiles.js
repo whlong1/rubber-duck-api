@@ -2,7 +2,7 @@ import { Profile } from "../models/profile.js"
 
 const index = async (req, res) => {
   try {
-    const profiles = await Profile.find({}, 'name')
+    const profiles = await Profile.find({})
     res.status(200).json(profiles)
   } catch (err) {
     res.status(500).json(err)
@@ -12,8 +12,8 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const profile = await Profile.findById(req.params.id)
-      .populate({ path: 'following', select: { 'name': 1 } })
-      .populate({ path: 'followers', select: { 'name': 1 } })
+      .populate('following', 'name occupation')
+      .populate('followers', 'name occupation')
     res.status(200).json(profile)
   } catch (err) {
     res.status(500).json(err)
