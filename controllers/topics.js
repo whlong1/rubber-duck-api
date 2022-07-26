@@ -1,3 +1,4 @@
+import { Post } from "../models/post.js"
 import { Topic } from "../models/topic.js"
 
 const create = async (req, res) => {
@@ -28,8 +29,24 @@ const show = async (req, res) => {
   }
 }
 
+const findPostByTopic = async (req, res) => {
+  try {
+    const { id } = req.params
+    const filter = { author: req.user.profile, topic: id }
+    const post = await Post.findOne(filter)
+      .populate('iterations')
+      .populate('topic', 'title')
+    res.status(200).json(post)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
+}
+
+
 export {
-  create,
-  index,
   show,
+  index,
+  create,
+  findPostByTopic
 }

@@ -7,11 +7,14 @@ import { decodeUserFromToken, checkAuth } from '../middleware/auth.js'
 const router = Router()
 
 // ========= Public Routes ========= 
-router.get('/', postsCtrl.index)
-router.get('/:id', postsCtrl.show)
 
 // ========= Protected Routes ========= 
 router.use(decodeUserFromToken)
+
+// http://localhost:3001/api/posts?sort=popular&&search=62ded86322b57344c4b4824e
+router.get('/', checkAuth, postsCtrl.index)
+router.get('/:id', checkAuth, postsCtrl.show)
+
 router.delete('/:id', checkAuth, postsCtrl.delete)
 router.post('/', checkAuth, attributeAuthor, postsCtrl.create)
 router.patch('/:id/views', checkAuth, postsCtrl.incrementViews)

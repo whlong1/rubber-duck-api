@@ -1,9 +1,1 @@
-Create New Post => Pick A Topic 
-
-send request
-find posts where
-  post.author === req.user.profile
-  post.topic === req.params.topicId
-
-  populate iterations
-  user is automatically adding next iteration
+when adding a topic, make sure a topic with that name does not already exist

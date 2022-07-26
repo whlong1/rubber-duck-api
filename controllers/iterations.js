@@ -7,7 +7,8 @@ const findKeywords = async (req, res) => {
   try {
     const { search } = req.query
     const filter = { topic: req.query.search }
-    const iterations = await Iteration.find(search ? filter : {}).limit(20).sort({ rating: 'desc' })
+    const iterations = await Iteration.find(search ? filter : {})
+      .limit(20).sort({ rating: 'desc' })
     const keywords = compareText(iterations)
     res.status(201).json(keywords)
   } catch (err) {
