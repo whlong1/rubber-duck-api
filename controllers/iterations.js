@@ -1,7 +1,7 @@
 import { Post } from "../models/post.js"
 import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"
-import { compareText } from "./utils/utils.js"
+import { compareText, calculateStars } from "./utils/utils.js"
 
 const findKeywords = async (req, res) => {
   try {
@@ -58,7 +58,7 @@ const castVote = async (req, res) => {
 
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
-    iteration.rating = (total / length)
+    iteration.rating = calculateStars((total / length))
 
     await iteration.save()
     res.status(200).json(iteration)
@@ -76,10 +76,9 @@ const undoVote = async (req, res) => {
     if (!prev) { return res.status(404).json({ msg: 'Vote note found!' }) }
 
     iteration.votes.remove({ _id: prev._id })
-
     const length = iteration.votes.length
     const total = iteration.votes.reduce((t, v) => t + parseInt(v.vote), 0)
-    iteration.rating = isNaN(total / length) ? 0 : (total / length)
+    iteration.rating = isNaN(total / length) ? 0 : calculateStars((total / length))
 
     await iteration.save()
     res.status(200).json(iteration)

@@ -28,6 +28,7 @@ const create = async (req, res) => {
 const index = async (req, res) => {
   try {
     const { search, page, sort } = req.query
+    console.log(req.query)
     const filter = { topic: req.query.search }
     const fields = 'views iterations author createdAt'
     const limit = req.query.limit ? req.query.limit : 10
@@ -43,6 +44,7 @@ const index = async (req, res) => {
         select: 'text rating createdAt',
         options: { sort: { 'rating': 'desc' } },
       })
+    console.log(posts)
     res.status(200).json(posts)
   } catch (err) {
     console.log(err)

@@ -24,3 +24,11 @@ findPostByTopic
 
 
 Need button on post details to add iteration
+
+remove autocomplete from signup
+
+
+post list has useEffect to fetch posts by topic id
+
+
+add protectedRoute component

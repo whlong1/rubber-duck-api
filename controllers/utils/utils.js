@@ -28,4 +28,15 @@ const compareText = (iterations) => {
   return keys.sort((a, b) => wordCount[b] - wordCount[a]).slice(0, 20)
 }
 
-export { compareText }
+const calculateStars = (value) => {
+  if (value < -.5) return 1
+  if (value >= -.5 && value < 0) return 2
+  if (value <= .5 && value >= 0) return 3
+  if (value > .5) return 4
+}
+
+export { 
+  compareText,
+  calculateStars
+
+}
