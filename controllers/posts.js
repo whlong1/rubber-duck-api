@@ -55,7 +55,7 @@ const index = async (req, res) => {
 const show = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-      .populate('topic', 'title')
+      .populate('topic', 'title category')
       .populate('author', 'name occupation')
       .populate({
         path: 'iterations',
