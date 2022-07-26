@@ -9,7 +9,13 @@ const topicSchema = new Schema({
   },
   category: {
     type: String,
-    enum: ['Computer Science', 'Math', 'Science'],
+    enum: [
+      'Math',
+      'Science',
+      'History',
+      'Literature',
+      'Computer Science',
+    ],
   },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
 },
