@@ -14,7 +14,7 @@ const topicSchema = new Schema({
       'Science',
       'History',
       'Literature',
-      'Computer Science',
+      'CompSci',
     ],
   },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
