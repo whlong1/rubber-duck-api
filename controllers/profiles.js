@@ -39,7 +39,7 @@ const follow = async (req, res) => {
     follower.following.push(followee._id)
     followee.followers.push(follower._id)
     await Promise.all([follower.save(), followee.save()])
-    res.status(200).json({ msg: `You are now following ${followee.name}.` })
+    res.status(200).json({ msg: `You are now following ${followee.name}.`, follower: follower })
   } catch (err) {
     res.status(500).json(err)
   }
