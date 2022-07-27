@@ -16,28 +16,12 @@ or, build an iteration.show controller, pull comments
 posts index
 // http://localhost:3001/api/posts?sort=popular&&search=62ded86322b57344c4b4824e
 
-findPostByTopic
-  when a user clicks on a topic they would like to add a post for
-  check if post already exists
-
-Need button on post details to add iteration
-
-remove autocomplete from signup
-
-post list has useEffect to fetch posts by topic id
-
-add protectedRoute component
-protect browse
-
-change computer science to comp sci
-
-add a topic form
-
-fix navbar
 
 The word iguana is derived from the original Taino name for the species, iwana. In addition to the two species in the genus Iguana, several other related genera in the same family have common names of the species including the word iguana.
 
-post list data 0 issue
-
 
 Binary trees are a commonly used type, which constrain the number of children for each parent to exactly two. When the order of the children is specified, this data structure corresponds to an ordered tree in graph theory. A value or pointer to other data may be associated with every node in the tree, or sometimes only with the leaf nodes, which have no children.
+
+In computer science, a binary tree is a tree data structure in which each node has at most two children, which are referred to as the left child and the right child. A recursive definition using just set theory notions is that a (non-empty) binary tree is a tuple L, S, R, where L and R are binary trees or the empty set and S is a singleton set containing the root. Some authors allow the binary tree to be the empty set as well.
+
+In mathematics, what is termed binary tree can vary significantly from author to author. Some use the definition commonly used in computer science but others define it as every non-leaf having exactly two children and don't necessarily order as left and right the children either.

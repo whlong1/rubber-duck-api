@@ -28,7 +28,6 @@ const create = async (req, res) => {
 const index = async (req, res) => {
   try {
     const { search, page, sort } = req.query
-    console.log(req.query)
     const filter = { topic: req.query.search }
     const fields = 'views iterations author createdAt'
     const limit = req.query.limit ? req.query.limit : 10
@@ -59,7 +58,7 @@ const show = async (req, res) => {
       .populate('author', 'name occupation')
       .populate({
         path: 'iterations',
-        select: 'text rating createdAt comments',
+        select: 'text rating createdAt comments votes',
         options: { sort: { 'rating': 'desc' } },
         populate: { path: 'comments.author', model: 'Profile', select: 'name occupation' }
       })
