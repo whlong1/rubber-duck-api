@@ -17,6 +17,7 @@ const show = async (req, res) => {
       .populate({
         path: 'posts',
         populate: { path: 'author', model: 'Profile', select: 'name occupation' },
+        populate: { path: 'topic', model: 'Topic', select: 'title' },
         populate: {
           model: 'Iteration',
           perDocumentLimit: 1,
