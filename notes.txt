@@ -25,3 +25,6 @@ Binary trees are a commonly used type, which constrain the number of children fo
 In computer science, a binary tree is a tree data structure in which each node has at most two children, which are referred to as the left child and the right child. A recursive definition using just set theory notions is that a (non-empty) binary tree is a tuple L, S, R, where L and R are binary trees or the empty set and S is a singleton set containing the root. Some authors allow the binary tree to be the empty set as well.
 
 In mathematics, what is termed binary tree can vary significantly from author to author. Some use the definition commonly used in computer science but others define it as every non-leaf having exactly two children and don't necessarily order as left and right the children either.
+
+All things are made of atoms — little particles that move around in 
+perpetual motion, attracting each other when they are a little distance apart, but repelling upon being squeezed into one another.
