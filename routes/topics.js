@@ -14,5 +14,7 @@ router.post('/', checkAuth, topicsCtrl.create)
 router.get('/:id', checkAuth, topicsCtrl.show)
 router.get('/:id/posts', checkAuth, topicsCtrl.findPostByTopic)
 
+router.get('/:topicId/posts/:postId', checkAuth, topicsCtrl.search)
+
 
 export { router }

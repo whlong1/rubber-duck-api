@@ -1,11 +1,12 @@
 import { Post } from "../models/post.js"
 import { Topic } from "../models/topic.js"
+import { Iteration } from "../models/iteration.js"
 
 const create = async (req, res) => {
   try {
-    const filter = { 
+    const filter = {
       category: req.body.category,
-      title: { $regex: `^${req.body.title}$`, $options: 'i' } 
+      title: { $regex: `^${req.body.title}$`, $options: 'i' }
     }
     const existingTopic = await Topic.findOne(filter)
     if (existingTopic) {
@@ -54,9 +55,25 @@ const findPostByTopic = async (req, res) => {
   }
 }
 
+const search = async (req, res) => {
+  try {
+    const { search, page, sort } = req.query
+    const filter = {
+      topic: req.params.topicId,
+      text: { $regex: search, $options: 'i' }
+    }
+    const results = await Iteration.find(search ? filter : {}, fields)
+    res.status(200).json(results)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
+}
+
 export {
   show,
   index,
   create,
-  findPostByTopic
+  search,
+  findPostByTopic,
 }
