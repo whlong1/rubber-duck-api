@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import * as postSchemaMethods from './methods.js'
 
 const Schema = mongoose.Schema
 
@@ -12,6 +13,7 @@ const postSchema = new Schema({
   { timestamps: true }
 )
 
+postSchema.statics = postSchemaMethods
 const Post = mongoose.model('Post', postSchema)
 
 export {
