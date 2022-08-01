@@ -20,6 +20,7 @@ function findPostByIterationText(topicId, search, sort, page) {
         localField: 'iterations',
         pipeline: [
           { $match: { text: { $regex: searchText, $options: 'i' } } },
+          { $project: { text: 1, rating: 1, createdAt: 1 } },
           { $sort: { rating: -1 } },
           { $limit: 1 },
         ],
