@@ -2,12 +2,13 @@ import mongoose from 'mongoose'
 
 function findPostByIterationText(topicId, search) {
   console.log(topicId, search)
+  const searchText = search ? search : ''
   return this.aggregate([
     { $match: { topic: mongoose.Types.ObjectId(topicId) } },
     {
       $lookup: {
-        pipeline: [{ $project: { name: 1, avatar: 1 } }],
         from: 'profiles', localField: 'author', foreignField: '_id', as: 'author',
+        pipeline: [{ $project: { name: 1, avatar: 1 } }],
       }
     },
     {
@@ -16,7 +17,7 @@ function findPostByIterationText(topicId, search) {
         as: 'iterations',
         foreignField: '_id',
         localField: 'iterations',
-        pipeline: [{ $match: { text: { $regex: search, $options: 'i' } } }],
+        pipeline: [{ $match: { text: { $regex: searchText, $options: 'i' } } }],
       }
     }
   ])
