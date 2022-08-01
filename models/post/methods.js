@@ -1,11 +1,17 @@
 import mongoose from 'mongoose'
 
-function findPostByIterationText(topicId, search, sort, page) {
+function findPostsAndIteration(topicId, search, sort, page) {
   const searchText = search ? search : ''
   const skipCount = page ? parseInt(page) * 10 : 0
   const order = { recent: { createdAt: -1 }, popular: { 'iterations.rating': -1 } }
   return this.aggregate([
     { $match: { topic: mongoose.Types.ObjectId(topicId) } },
+    {
+      $lookup: {
+        from: 'topics', localField: 'topic', foreignField: '_id', as: 'topic',
+        pipeline: [{ $project: { title: 1, category: 1 } }],
+      }
+    },
     {
       $lookup: {
         from: 'profiles', localField: 'author', foreignField: '_id', as: 'author',
@@ -33,5 +39,5 @@ function findPostByIterationText(topicId, search, sort, page) {
 }
 
 export {
-  findPostByIterationText
+  findPostsAndIteration
 }
