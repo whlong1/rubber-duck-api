@@ -1,4 +1,4 @@
-import { Post } from "../models/post.js"
+import { Post } from "../models/post/post.js"
 import { Topic } from "../models/topic.js"
 import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"

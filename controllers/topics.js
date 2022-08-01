@@ -1,6 +1,5 @@
-import { Post } from "../models/post.js"
+import { Post } from "../models/post/post.js"
 import { Topic } from "../models/topic.js"
-import { Iteration } from "../models/iteration.js"
 
 const create = async (req, res) => {
   try {
@@ -58,11 +57,8 @@ const findPostByTopic = async (req, res) => {
 const search = async (req, res) => {
   try {
     const { search, page, sort } = req.query
-    const filter = {
-      topic: req.params.topicId,
-      text: { $regex: search, $options: 'i' }
-    }
-    const results = await Iteration.find(search ? filter : {}, fields)
+
+    const results = await Post.findPostByIterationText(req.params.topicId, search)
     res.status(200).json(results)
   } catch (err) {
     console.log(err)
