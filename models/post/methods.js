@@ -1,12 +1,9 @@
 import mongoose from 'mongoose'
 
-function findPostByIterationText(topicId, search) {
+function findPostByIterationText(topicId, search, sort, page) {
   const searchText = search ? search : ''
-  console.log(topicId, search)
-
-  const recent = { createdAt: -1 }
-  const popular = { 'iterations.rating': -1 }
-
+  const skipCount = page ? parseInt(page) * 10 : 0
+  const order = { recent: { createdAt: -1 }, popular: { 'iterations.rating': -1 } }
   return this.aggregate([
     { $match: { topic: mongoose.Types.ObjectId(topicId) } },
     {
@@ -28,7 +25,9 @@ function findPostByIterationText(topicId, search) {
         ],
       }
     },
-    { $sort: popular },
+    { $sort: sort ? order[sort] : order.recent },
+    { $skip: skipCount },
+    { $limit: 10 },
   ])
 }
 
