@@ -59,9 +59,9 @@ const search = async (req, res) => {
   try {
     const { topicId } = req.params
     const { search, sort, page } = req.query
-
-    const results = await Post.findPostsAndIteration(topicId, search, sort, page)
-    res.status(200).json(results)
+    const topic = await Topic.findById(topicId, 'title category')
+    const posts = await Post.findPostsAndIteration(topicId, search, sort, page)
+    res.status(200).json({ topic: topic, posts: posts })
   } catch (err) {
     console.log(err)
     res.status(500).json(err)
