@@ -35,7 +35,6 @@ function findPostsAndIteration(topicId, search, sort, page) {
         text: { $first: "$iterations.text" },
         rating: { $first: "$iterations.rating" },
         createdAt: { $first: "$iterations.createdAt" },
-
       }
     },
     { $match: { text: { $exists: true } } },

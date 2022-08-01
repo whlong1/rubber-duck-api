@@ -12,9 +12,7 @@ router.use(decodeUserFromToken)
 router.get('/', checkAuth, topicsCtrl.index)
 router.post('/', checkAuth, topicsCtrl.create)
 router.get('/:id', checkAuth, topicsCtrl.show)
-// router.get('/:id/posts', checkAuth, topicsCtrl.findPostByTopic)
-
-router.get('/:topicId/posts', checkAuth, topicsCtrl.search)
+router.get('/:topicId/posts', checkAuth, topicsCtrl.findTopicAndPosts)
 
 
 export { router }

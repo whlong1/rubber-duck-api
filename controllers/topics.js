@@ -40,22 +40,7 @@ const show = async (req, res) => {
   }
 }
 
-const findPostByTopic = async (req, res) => {
-  try {
-    const { id } = req.params
-    const filter = { author: req.user.profile, topic: id }
-    const post = await Post.findOne(filter)
-      .populate('iterations', 'text rating createdAt comments')
-      .populate('topic', 'title')
-    res.status(200).json(post)
-  } catch (err) {
-    console.log(err)
-    res.status(500).json(err)
-  }
-}
-
-// find post by topic,
-const search = async (req, res) => {
+const findTopicAndPosts = async (req, res) => {
   try {
     const { topicId } = req.params
     const { search, sort, page } = req.query
@@ -72,6 +57,5 @@ export {
   show,
   index,
   create,
-  search,
-  findPostByTopic,
+  findTopicAndPosts
 }
