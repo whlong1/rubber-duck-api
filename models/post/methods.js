@@ -4,6 +4,7 @@ function findPostsAndIteration(topicId, search, sort, page) {
   const searchText = search ? search : ''
   const skipCount = page ? parseInt(page) * 10 : 0
   const order = { recent: { 'createdAt': -1 }, popular: { 'rating': -1 } }
+  console.log('CHECK', search, sort, page)
   return this.aggregate([
     { $match: { topic: mongoose.Types.ObjectId(topicId) } },
     {
@@ -21,7 +22,7 @@ function findPostsAndIteration(topicId, search, sort, page) {
         pipeline: [
           { $match: { text: { $regex: searchText, $options: 'i' } } },
           { $project: { text: 1, rating: 1, createdAt: 1 } },
-          { $sort: { rating: -1 } },
+          { $sort: sort ? order[sort] : order.recent},
           { $limit: 1 },
         ],
       }

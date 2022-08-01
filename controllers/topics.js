@@ -44,6 +44,7 @@ const findTopicAndPosts = async (req, res) => {
   try {
     const { topicId } = req.params
     const { search, sort, page } = req.query
+    console.log(sort, page, search)
     const topic = await Topic.findById(topicId, 'title category')
     const posts = await Post.findPostsAndIteration(topicId, search, sort, page)
     res.status(200).json({ topic: topic, posts: posts })
