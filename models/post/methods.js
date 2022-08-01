@@ -6,6 +6,12 @@ function findPostByIterationText(topicId, search) {
     { $match: { topic: mongoose.Types.ObjectId(topicId) } },
     {
       $lookup: {
+        pipeline: [{ $project: { name: 1, avatar: 1 } }],
+        from: 'profiles', localField: 'author', foreignField: '_id', as: 'author',
+      }
+    },
+    {
+      $lookup: {
         from: "iterations",
         as: 'iterations',
         foreignField: '_id',
