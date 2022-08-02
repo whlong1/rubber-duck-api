@@ -1,55 +1,5 @@
 import { Post } from "../models/post/post.js"
 import { Profile } from "../models/profile.js"
-import { Topic } from "../models/topic.js"
-
-const create = async (req, res) => {
-  try {
-    const oldPost = await Post.findOne({ author: req.user.profile, topic: req.body.topic })
-      .populate('author')
-    if (oldPost) {
-      res.status(401).json({ msg: 'You already made a post on this topic!' })
-    } else {
-      const post = await Post.create(req.body)
-      await Topic.updateOne(
-        { _id: req.body.topic },
-        { $push: { posts: post } }
-      )
-      await Profile.updateOne(
-        { _id: req.user.profile },
-        { $push: { posts: post } }
-      )
-      res.status(201).json(post)
-    }
-  } catch (err) {
-    res.status(500).json(err)
-  }
-}
-
-const index = async (req, res) => {
-  try {
-    const { search, page, sort } = req.query
-    const filter = { topic: req.query.search }
-    const fields = 'views iterations author createdAt'
-    const limit = req.query.limit ? req.query.limit : 10
-    const order = { recent: { createdAt: 'desc' }, popular: { views: 'desc' } }
-    const posts = await Post.find(search ? filter : {}, fields)
-      .limit(limit)
-      .skip(parseInt(page) * limit)
-      .sort(sort ? order[sort] : order.recent)
-      .populate('author', 'name occupation')
-      .populate('topic')
-      .populate({
-        path: 'iterations',
-        perDocumentLimit: 1,
-        select: 'text rating createdAt',
-        options: { sort: { 'rating': 'desc' } },
-      })
-    res.status(200).json(posts)
-  } catch (err) {
-    console.log(err)
-    res.status(500).json(err)
-  }
-}
 
 const show = async (req, res) => {
   try {
@@ -134,9 +84,7 @@ const removeBookmark = async (req, res) => {
 }
 
 export {
-  index,
   show,
-  create,
   bookmarkPost,
   removeBookmark,
   incrementViews,

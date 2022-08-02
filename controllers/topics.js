@@ -1,5 +1,8 @@
-import { Post } from "../models/post/post.js"
 import { Topic } from "../models/topic.js"
+import { Post } from "../models/post/post.js"
+import { Profile } from "../models/profile.js"
+import { Iteration } from "../models/iteration.js"
+import { compareText } from "./utils/utils.js"
 
 const create = async (req, res) => {
   try {
@@ -40,11 +43,33 @@ const show = async (req, res) => {
   }
 }
 
+const createPost = async (req, res) => {
+  try {
+    const filter = { author: req.user.profile, topic: req.body.topic }
+    const oldPost = await Post.findOne(filter).populate('author')
+    if (oldPost) {
+      res.status(401).json({ msg: 'You already made a post on this topic!' })
+    } else {
+      const post = await Post.create(req.body)
+      await Topic.updateOne(
+        { _id: req.params.topicId },
+        { $push: { posts: post } }
+      )
+      await Profile.updateOne(
+        { _id: req.user.profile },
+        { $push: { posts: post } }
+      )
+      res.status(201).json(post)
+    }
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
 const indexPosts = async (req, res) => {
   try {
     const { topicId } = req.params
     const { search, sort, page } = req.query
-    console.log(sort, page, search)
     const topic = await Topic.findById(topicId, 'title category')
     const posts = await Post.findPostsAndIteration(topicId, search, sort, page)
     res.status(200).json({ topic: topic, posts: posts })
@@ -54,9 +79,26 @@ const indexPosts = async (req, res) => {
   }
 }
 
+const findKeywords = async (req, res) => {
+  try {
+    const { search } = req.query
+    const filter = { topic: req.params.topicId}
+    const topic = await Topic.findById(req.params.topicId)
+    const iterations = await Iteration.find(search ? filter : {})
+      .limit(20).sort({ rating: 'desc' })
+      .populate('topic', 'title')
+    const keywords = compareText(iterations)
+    res.status(201).json({ keywords: keywords, topic: topic })
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
 export {
   show,
   index,
   create,
-  indexPosts
+  createPost,
+  indexPosts,
+  findKeywords
 }
