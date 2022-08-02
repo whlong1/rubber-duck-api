@@ -1,44 +1,7 @@
 import { Post } from "../models/post/post.js"
-import { Topic } from "../models/topic.js"
 import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"
-
-import { compareText, calculateStars } from "./utils/utils.js"
-
-const findKeywords = async (req, res) => {
-  try {
-    const { search } = req.query
-    const filter = { topic: req.query.search }
-    const topic = await Topic.findById(req.query.search)
-    const iterations = await Iteration.find(search ? filter : {})
-      .limit(20).sort({ rating: 'desc' })
-      .populate('topic', 'title')
-    const keywords = compareText(iterations)
-    res.status(201).json({ keywords: keywords, topic: topic })
-  } catch (err) {
-    res.status(500).json(err)
-  }
-}
-
-const createIteration = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id)
-    if (!post.author.equals(req.user.profile)) {
-      res.status(401).json({ msg: 'Unauthorized' })
-    } else {
-      req.body.topic = post.topic
-      req.body.post = req.params.id
-      const iteration = await Iteration.create(req.body)
-      await Post.updateOne(
-        { _id: req.params.id },
-        { $push: { iterations: iteration } }
-      )
-      res.status(201).json(iteration)
-    }
-  } catch (err) {
-    res.status(500).json(err)
-  }
-}
+import { calculateStars } from "./utils/utils.js"
 
 const castVote = async (req, res) => {
   try {
@@ -107,7 +70,5 @@ const createComment = async (req, res) => {
 export {
   undoVote,
   castVote,
-  findKeywords,
   createComment,
-  createIteration,
 }

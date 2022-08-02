@@ -1,5 +1,8 @@
-import { Post } from "../models/post/post.js"
 import { Topic } from "../models/topic.js"
+import { Post } from "../models/post/post.js"
+import { Profile } from "../models/profile.js"
+import { Iteration } from "../models/iteration.js"
+import { compareText } from "./utils/utils.js"
 
 const create = async (req, res) => {
   try {
@@ -40,11 +43,33 @@ const show = async (req, res) => {
   }
 }
 
-const findTopicAndPosts = async (req, res) => {
+const createPost = async (req, res) => {
+  try {
+    const filter = { author: req.user.profile, topic: req.params.topicId }
+    const oldPost = await Post.findOne(filter).populate('author')
+    if (oldPost) {
+      res.status(401).json({ msg: 'You already made a post on this topic!' })
+    } else {
+      const post = await Post.create(filter)
+      await Topic.updateOne(
+        { _id: req.params.topicId },
+        { $push: { posts: post } }
+      )
+      await Profile.updateOne(
+        { _id: req.user.profile },
+        { $push: { posts: post } }
+      )
+      res.status(201).json(post)
+    }
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
+const indexPosts = async (req, res) => {
   try {
     const { topicId } = req.params
     const { search, sort, page } = req.query
-    console.log(sort, page, search)
     const topic = await Topic.findById(topicId, 'title category')
     const posts = await Post.findPostsAndIteration(topicId, search, sort, page)
     res.status(200).json({ topic: topic, posts: posts })
@@ -54,9 +79,48 @@ const findTopicAndPosts = async (req, res) => {
   }
 }
 
+const newIteration = async (req, res) => {
+  try {
+    const filter = { topic: req.params.topicId }
+    const post = await Post.findById(req.params.postId)
+    const topic = await Topic.findById(req.params.topicId, 'title category')
+    const iterations = await Iteration.find(filter).sort({ rating: 'desc' }).limit(20)
+
+    const index = post.iterations.length + 1
+    const keywords = compareText(iterations)
+
+    res.status(201).json({ keywords: keywords, index: index, topic: topic })
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
+const createIteration = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId)
+    if (!post.author.equals(req.user.profile)) {
+      res.status(401).json({ msg: 'Unauthorized' })
+    } else {
+      req.body.post = req.params.postId
+      req.body.topic = req.params.topicId
+      const iteration = await Iteration.create(req.body)
+      await Post.updateOne(
+        { _id: req.params.postId },
+        { $push: { iterations: iteration } }
+      )
+      res.status(201).json(iteration)
+    }
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
 export {
   show,
   index,
   create,
-  findTopicAndPosts
+  createPost,
+  indexPosts,
+  newIteration,
+  createIteration
 }
