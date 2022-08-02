@@ -79,18 +79,40 @@ const indexPosts = async (req, res) => {
   }
 }
 
-// newIteration
-const findKeywords = async (req, res) => {
+const newIteration = async (req, res) => {
   try {
     // return iterations length
     // const data = await postService.show(postId)
     // setIterations(data.iterations.length + 1)
     const filter = { topic: req.params.topicId }
+    const post = await Post.findById(req.params.postId)
     const topic = await Topic.findById(req.params.topicId)
-    const iterations = await Iteration.find(filter).limit(20).sort({ rating: 'desc' })
+    const iterations = await Iteration.find(filter).sort({ rating: 'desc' }).limit(20)
 
+    const index = post.iterations.length
     const keywords = compareText(iterations)
-    res.status(201).json({ keywords: keywords, topic: topic })
+
+    res.status(201).json({ keywords: keywords, index: index, topic: topic })
+  } catch (err) {
+    res.status(500).json(err)
+  }
+}
+
+const createIteration = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId)
+    if (!post.author.equals(req.user.profile)) {
+      res.status(401).json({ msg: 'Unauthorized' })
+    } else {
+      req.body.post = req.params.postId
+      req.body.topic = req.params.topicId
+      const iteration = await Iteration.create(req.body)
+      await Post.updateOne(
+        { _id: req.params.postId },
+        { $push: { iterations: iteration } }
+      )
+      res.status(201).json(iteration)
+    }
   } catch (err) {
     res.status(500).json(err)
   }
@@ -102,5 +124,6 @@ export {
   create,
   createPost,
   indexPosts,
-  findKeywords
+  newIteration,
+  createIteration
 }
