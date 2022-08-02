@@ -83,7 +83,7 @@ const newIteration = async (req, res) => {
   try {
     const filter = { topic: req.params.topicId }
     const post = await Post.findById(req.params.postId)
-    const topic = await Topic.findById(req.params.topicId)
+    const topic = await Topic.findById(req.params.topicId, 'title category')
     const iterations = await Iteration.find(filter).sort({ rating: 'desc' }).limit(20)
 
     const index = post.iterations.length + 1
