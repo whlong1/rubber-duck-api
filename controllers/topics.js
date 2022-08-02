@@ -45,7 +45,7 @@ const show = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const filter = { author: req.user.profile, topic: req.body.topic }
+    const filter = { author: req.user.profile, topic: req.params.topicId }
     const oldPost = await Post.findOne(filter).populate('author')
     if (oldPost) {
       res.status(401).json({ msg: 'You already made a post on this topic!' })
