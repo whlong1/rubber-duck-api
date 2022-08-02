@@ -40,7 +40,7 @@ const show = async (req, res) => {
   }
 }
 
-const findTopicAndPosts = async (req, res) => {
+const indexPosts = async (req, res) => {
   try {
     const { topicId } = req.params
     const { search, sort, page } = req.query
@@ -58,5 +58,5 @@ export {
   show,
   index,
   create,
-  findTopicAndPosts
+  indexPosts
 }
