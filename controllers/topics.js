@@ -50,7 +50,7 @@ const createPost = async (req, res) => {
     if (oldPost) {
       res.status(401).json({ msg: 'You already made a post on this topic!' })
     } else {
-      const post = await Post.create(req.body)
+      const post = await Post.create(filter)
       await Topic.updateOne(
         { _id: req.params.topicId },
         { $push: { posts: post } }
