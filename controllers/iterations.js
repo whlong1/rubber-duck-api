@@ -3,26 +3,6 @@ import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"
 import { calculateStars } from "./utils/utils.js"
 
-const createIteration = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id)
-    if (!post.author.equals(req.user.profile)) {
-      res.status(401).json({ msg: 'Unauthorized' })
-    } else {
-      req.body.topic = post.topic
-      req.body.post = req.params.id
-      const iteration = await Iteration.create(req.body)
-      await Post.updateOne(
-        { _id: req.params.id },
-        { $push: { iterations: iteration } }
-      )
-      res.status(201).json(iteration)
-    }
-  } catch (err) {
-    res.status(500).json(err)
-  }
-}
-
 const castVote = async (req, res) => {
   try {
     const vote = req.body.vote
@@ -91,5 +71,4 @@ export {
   undoVote,
   castVote,
   createComment,
-  createIteration,
 }
