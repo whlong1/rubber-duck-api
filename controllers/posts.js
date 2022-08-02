@@ -8,8 +8,8 @@ const show = async (req, res) => {
       .populate('author', 'name occupation')
       .populate({
         path: 'iterations',
-        select: 'text rating createdAt comments votes',
         options: { sort: { 'rating': 'desc' } },
+        select: 'text rating createdAt comments votes',
         populate: { path: 'comments.author', model: 'Profile', select: 'name occupation' }
       })
     res.status(200).json(post)

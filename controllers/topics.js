@@ -79,14 +79,16 @@ const indexPosts = async (req, res) => {
   }
 }
 
+// newIteration
 const findKeywords = async (req, res) => {
   try {
-    const { search } = req.query
-    const filter = { topic: req.params.topicId}
+    // return iterations length
+    // const data = await postService.show(postId)
+    // setIterations(data.iterations.length + 1)
+    const filter = { topic: req.params.topicId }
     const topic = await Topic.findById(req.params.topicId)
-    const iterations = await Iteration.find(search ? filter : {})
-      .limit(20).sort({ rating: 'desc' })
-      .populate('topic', 'title')
+    const iterations = await Iteration.find(filter).limit(20).sort({ rating: 'desc' })
+
     const keywords = compareText(iterations)
     res.status(201).json({ keywords: keywords, topic: topic })
   } catch (err) {

@@ -13,12 +13,8 @@ router.use(decodeUserFromToken)
 router.get('/', checkAuth, topicsCtrl.index)
 router.post('/', checkAuth, topicsCtrl.create)
 
-// indexPosts
 router.get('/:topicId/posts', checkAuth, topicsCtrl.indexPosts)
 router.post('/:topicId/posts', checkAuth, attributeAuthor, topicsCtrl.createPost)
-
-
-// no longer need to include topicId in req.query
 router.get('/:topicId/posts/:postId/iterations', checkAuth, topicsCtrl.findKeywords)
 
 export { router }

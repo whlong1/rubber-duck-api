@@ -1,7 +1,6 @@
 import { Post } from "../models/post/post.js"
 import { Profile } from "../models/profile.js"
 import { Iteration } from "../models/iteration.js"
-
 import { calculateStars } from "./utils/utils.js"
 
 const createIteration = async (req, res) => {
