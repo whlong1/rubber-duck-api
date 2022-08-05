@@ -4,7 +4,7 @@ import { Profile } from "../models/profile.js"
 const show = async (req, res) => {
   try {
     const profile = await Profile.findById(req.user.profile, 'bookmarks')
-    const post = await Post.findById(req.params.id)
+    const post = await Post.findById(req.params.id).lean()
       .populate('topic', 'title category')
       .populate('author', 'name occupation')
       .populate({
