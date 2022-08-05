@@ -12,6 +12,7 @@ const show = async (req, res) => {
         select: 'text rating createdAt comments votes',
         populate: { path: 'comments.author', model: 'Profile', select: 'name occupation' }
       })
+    console.log('POST', post)
     res.status(200).json(post)
   } catch (err) {
     console.log(err)
@@ -44,12 +45,12 @@ const incrementViews = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id, 'views viewers author')
     if (post.viewers.includes(req.user.profile) || post.author.equals(req.user.profile)) {
-      res.status(200).send('Already viewed.')
+      res.status(200).json({ msg: 'Already viewed.', success: false })
     } else {
       post.views = post.views + 1
       post.viewers.push(req.user.profile)
       await post.save()
-      res.status(200).send('OK')
+      res.status(200).json({ msg: 'Success', success: true })
     }
   } catch (err) {
     console.log(err)
