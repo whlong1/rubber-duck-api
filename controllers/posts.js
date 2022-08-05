@@ -67,7 +67,7 @@ const bookmarkPost = async (req, res) => {
     } else {
       profile.bookmarks.push(req.params.id)
       profile.save()
-      res.status(200).send('OK')
+      res.status(200).json({ msg: 'Success' })
     }
   } catch (err) {
     res.status(500).json(err)
@@ -79,7 +79,7 @@ const removeBookmark = async (req, res) => {
     const profile = await Profile.findById(req.user.profile)
     profile.bookmarks.remove({ _id: req.params.id })
     await profile.save()
-    res.status(200).send('OK')
+    res.status(200).json({ msg: 'Success' })
   } catch (err) {
     res.status(500).json(err)
   }
