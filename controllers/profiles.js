@@ -11,7 +11,7 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    const profile = await Profile.findById(req.params.id)
+    const profile = await Profile.findById(req.params.id).lean()
       .populate('following', 'name occupation')
       .populate('followers', 'name occupation')
       .populate({
