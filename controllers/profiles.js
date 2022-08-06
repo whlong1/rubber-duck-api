@@ -15,11 +15,23 @@ const show = async (req, res) => {
       .populate('following', 'name occupation')
       .populate('followers', 'name occupation')
       .populate({
+        path: 'bookmarks',
+        populate: [
+          { path: 'topic', model: 'Topic', select: 'title category' },
+          { path: 'author', model: 'Profile', select: 'name avatar' },
+          {
+            path: 'iterations', model: 'Iteration', select: 'text rating createdAt',
+            perDocumentLimit: 1, select: 'text rating createdAt',
+            options: { sort: { 'rating': 'desc' } },
+          }
+        ],
+      })
+      .populate({
         path: 'posts',
         populate: {
           model: 'Iteration',
           perDocumentLimit: 1,
-          path: 'iterations', 
+          path: 'iterations',
           select: 'text rating createdAt',
           options: { sort: { 'rating': 'desc' } },
         }
