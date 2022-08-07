@@ -19,8 +19,9 @@ const wordsForRemoval = [
 ]
 
 const compareText = (iterations) => {
-  const textArr = iterations.map((i) => i.text)
-  const wordsUniqueToEachPost = textArr.map((block) => [...new Set(block.toLowerCase().replace(/\W|_/g, ' ').split(' '))])
+  const wordsUniqueToEachPost = iterations.map(
+    (block) => [...new Set(block.text.toLowerCase().replace(/\W|_/g, ' ').split(' '))]
+  )
   const textBlock = wordsUniqueToEachPost.flat().toString().toLowerCase().replace(/\W|_/g, ' ')
   const wordArr = textBlock.replace(new RegExp('\\b(' + wordsForRemoval.join("|") + ')\\b', 'gi'), ' ').split(' ')
   const wordCount = wordArr.reduce((obj, w) => { obj[w] ? obj[w]++ : obj[w] = 1; return obj }, {})
