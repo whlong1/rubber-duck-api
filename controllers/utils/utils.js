@@ -20,12 +20,11 @@ const wordsForRemoval = [
 
 const compareText = (iterations) => {
   const textArr = iterations.map((i) => i.text)
-  const wordsUniqueToEachPost = textArr.map((block) => [...new Set(block.toLowerCase().replace(/\W|_/g, ' ').split(' '))])
-  const textBlock = wordsUniqueToEachPost.flat().toString().toLowerCase().replace(/\W|_/g, ' ')
-  const wordArr = textBlock.replace(new RegExp('\\b(' + wordsForRemoval.join("|") + ')\\b', 'gi'), ' ').split(' ')
+  const wordsUniqueToEachBlock = textArr.map((block) => [...new Set(block.toLowerCase().replace(/\W|_/g, ' ').split(' '))])
+  const allUniqueWords = wordsUniqueToEachBlock.flat().toString().toLowerCase().replace(/\W|_/g, ' ')
+  const wordArr = allUniqueWords.replace(new RegExp('\\b(' + wordsForRemoval.join("|") + ')\\b', 'gi'), ' ').split(' ')
   const wordCount = wordArr.reduce((obj, w) => { obj[w] ? obj[w]++ : obj[w] = 1; return obj }, {})
-  const keys = Object.keys(wordCount).filter((key) => key !== '')
-  return keys.sort((a, b) => wordCount[b] - wordCount[a]).slice(0, 20)
+  return Object.keys(wordCount).filter((key) => key !== '').sort((a, b) => wordCount[b] - wordCount[a]).slice(0, 20)
 }
 
 const calculateStars = (value) => {
